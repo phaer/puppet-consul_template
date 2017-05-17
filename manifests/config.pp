@@ -71,7 +71,7 @@ class consul_template::config (
 
     concat::fragment { 'vault-base':
       target  => 'consul-template/config.json',
-      content => inline_template("vault {\n  address = \"${::consul_template::vault_address}\"\n${token}}"),
+      content => inline_template("vault {\n  address = \"${::consul_template::vault_address}\"\n${token}"),
       order   => '07',
     }
     if $::consul_template::vault_ssl {
