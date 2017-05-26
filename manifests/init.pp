@@ -96,6 +96,7 @@ class consul_template (
   $deduplicate        = false,
   $deduplicate_prefix = undef,
   $init_style         = $consul_template::params::init_style,
+  $syslog_enable      = true,
   $log_level          = $consul_template::params::log_level,
   $logrotate_compress = 'nocompress',
   $logrotate_files    = 4,

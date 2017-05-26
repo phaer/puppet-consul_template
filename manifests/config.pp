@@ -93,6 +93,14 @@ class consul_template::config (
     }
   }
 
+  if $::consul_template::syslog_enable {
+    concat::fragment { 'syslog-enable':
+      target  => 'consul-template/config.json',
+      content => inline_template("  syslog {\n    enabled = true\n}\n"),
+      order   => '11',
+    }
+  }
+
   file { [$consul_template::config_dir, "${consul_template::config_dir}/config"]:
     ensure  => 'directory',
     purge   => $purge,
