@@ -41,6 +41,33 @@ class consul_template::config (
     }
   }
 
+  # Set dump_signal param if specified
+  if $::consul_template::consul_dump_signal {
+    concat::fragment { 'consul_dump_signal':
+      target  => 'consul-template/config.json',
+      content => inline_template("dump_signal = \"${::consul_template::consul_dump_signal}\"\n\n"),
+      order   => '03',
+    }
+  }
+
+  # Set kill_signal param if specified
+  if $::consul_template::consul_kill_signal {
+    concat::fragment { 'consul_kill_signal':
+      target  => 'consul-template/config.json',
+      content => inline_template("kill_signal = \"${::consul_template::consul_kill_signal}\"\n\n"),
+      order   => '03',
+    }
+  }
+
+  # Set reload_signal param if specified
+  if $::consul_template::consul_reload_signal {
+    concat::fragment { 'consul_reload_signal':
+      target  => 'consul-template/config.json',
+      content => inline_template("reload_signal = \"${::consul_template::consul_reload_signal}\"\n\n"),
+      order   => '03',
+    }
+  }
+
   if $::consul_template::deduplicate {
     concat::fragment { 'dedup-base':
       target  => 'consul-template/config.json',
