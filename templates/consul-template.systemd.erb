@@ -13,6 +13,7 @@ KillMode=process
 Restart=always
 RestartSec=42s
 LimitNOFILE=4096
+KillSignal=<%= scope.lookupvar('consul_template::consul_kill_signal') %>
 
 [Install]
 WantedBy=multi-user.target
