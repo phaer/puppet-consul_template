@@ -116,7 +116,7 @@ class consul_template::config (
 
     concat::fragment { 'vault-retries':
       target  => 'consul-template/config.json',
-      content => inline_template("  grace = \"${::consul_template::vault_grace}\"\n  retry {\n    attempts = \"${::consul_template::vault_retry_attempts}\"\n    backoff = \"${::consul_template::vault_retry_backoff}\"\n    max_backoff = \"${::consul_template::vault_retry_max_backoff}\"\n}\n"),
+      content => inline_template("  grace = \"${::consul_template::vault_grace}\"\n  retry {\n    attempts = ${::consul_template::vault_retry_attempts}\n    backoff = \"${::consul_template::vault_retry_backoff}\"\n    max_backoff = \"${::consul_template::vault_retry_max_backoff}\"\n}\n"),
       order   => '10',
     }
 
@@ -131,7 +131,7 @@ class consul_template::config (
     concat::fragment { 'syslog-enable':
       target  => 'consul-template/config.json',
       content => inline_template("  syslog {\n    enabled = true\n}\n"),
-      order   => '11',
+      order   => '12',
     }
   }
 
