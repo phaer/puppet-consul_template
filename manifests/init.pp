@@ -99,7 +99,6 @@ class consul_template (
   $deduplicate          = false,
   $deduplicate_prefix   = undef,
   $init_style           = $consul_template::params::init_style,
-  $systemd_unit_file    = undef,
   $syslog_enable        = true,
   $log_level            = $consul_template::params::log_level,
   $logrotate_compress   = 'nocompress',

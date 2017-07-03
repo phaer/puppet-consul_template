@@ -66,18 +66,11 @@ class consul_template::install {
         }
       }
       'systemd' : {
-        if ($consul_template::systemd_unit_file) {
-          $systemd_unit_file = $consul_template::systemd_unit_file
-        }
-        else {
-          $systemd_unit_file = 'consul_template/consul-template.systemd.erb'
-        }
-
         file { '/lib/systemd/system/consul-template.service':
           mode    => '0644',
           owner   => 'root',
           group   => 'root',
-          content => template($systemd_unit_file),
+          content => template('consul_template/consul-template.systemd.erb'),
         }
       }
       'sysv' : {
