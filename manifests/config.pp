@@ -12,7 +12,7 @@ class consul_template::config (
 
   concat::fragment { 'header':
     target  => 'consul-template/config.json',
-    content => inline_template("consul = \"<%= @consul_host %>:<%= @consul_port %>\"\ntoken = \"<%= @consul_token %>\"\nretry = \"<%= @consul_retry %>\"\n\n"),
+    content => inline_template("consul {\n  address = \"<%= @consul_host %>:<%= @consul_port %>\"\n  token = \"<%= @consul_token %>\"\n  retry = {\n    enabled = true\n    attempts = 5\n    backoff = \"<%= @consul_retry %>\"\n  }\n}\n\n"),
     order   => '00',
   }
 
@@ -37,6 +37,33 @@ class consul_template::config (
     concat::fragment { 'consul_max_stale':
       target  => 'consul-template/config.json',
       content => inline_template("max_stale = \"${::consul_template::consul_max_stale}\"\n\n"),
+      order   => '03',
+    }
+  }
+
+  # Set dump_signal param if specified
+  if $::consul_template::consul_dump_signal {
+    concat::fragment { 'consul_dump_signal':
+      target  => 'consul-template/config.json',
+      content => inline_template("dump_signal = \"${::consul_template::consul_dump_signal}\"\n\n"),
+      order   => '03',
+    }
+  }
+
+  # Set kill_signal param if specified
+  if $::consul_template::consul_kill_signal {
+    concat::fragment { 'consul_kill_signal':
+      target  => 'consul-template/config.json',
+      content => inline_template("kill_signal = \"${::consul_template::consul_kill_signal}\"\n\n"),
+      order   => '03',
+    }
+  }
+
+  # Set reload_signal param if specified
+  if $::consul_template::consul_reload_signal {
+    concat::fragment { 'consul_reload_signal':
+      target  => 'consul-template/config.json',
+      content => inline_template("reload_signal = \"${::consul_template::consul_reload_signal}\"\n\n"),
       order   => '03',
     }
   }
@@ -71,7 +98,7 @@ class consul_template::config (
 
     concat::fragment { 'vault-base':
       target  => 'consul-template/config.json',
-      content => inline_template("vault {\n  address = \"${::consul_template::vault_address}\"\n${token}}"),
+      content => inline_template("vault {\n  address = \"${::consul_template::vault_address}\"\n${token}"),
       order   => '07',
     }
     if $::consul_template::vault_ssl {
@@ -89,7 +116,7 @@ class consul_template::config (
 
     concat::fragment { 'vault-retries':
       target  => 'consul-template/config.json',
-      content => inline_template("  grace = \"${::consul_template::vault_grace}\"\n  retry {\n    attempts = \"${::consul_template::vault_retry_attempts}\"\n    backoff = \"${::consul_template::vault_retry_backoff}\"\n    max_backoff = \"${::consul_template::vault_retry_max_backoff}\"\n"),
+      content => inline_template("  retry {\n    attempts = ${::consul_template::vault_retry_attempts}\n    backoff = \"${::consul_template::vault_retry_backoff}\"\n    max_backoff = \"${::consul_template::vault_retry_max_backoff}\"\n}\n"),
       order   => '10',
     }
 
@@ -97,6 +124,14 @@ class consul_template::config (
       target  => 'consul-template/config.json',
       content => "}\n\n",
       order   => '11',
+    }
+  }
+
+  if $::consul_template::syslog_enable {
+    concat::fragment { 'syslog-enable':
+      target  => 'consul-template/config.json',
+      content => inline_template("  syslog {\n    enabled = true\n}\n"),
+      order   => '12',
     }
   }
 
