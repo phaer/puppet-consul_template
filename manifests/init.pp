@@ -114,7 +114,6 @@ class consul_template (
   $vault_ssl_key        = '',
   $vault_ssl_ca_cert    = '',
   $data_dir             = '',
-  $vault_grace             = '15s',
   $vault_retry_attempts    = '12',
   $vault_retry_backoff     = '250ms',
   $vault_retry_max_backoff = '1m',
