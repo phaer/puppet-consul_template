@@ -117,6 +117,7 @@ class consul_template (
   $vault_retry_attempts    = '12',
   $vault_retry_backoff     = '250ms',
   $vault_retry_max_backoff = '1m',
+  $vault_grace          = '30s',
   $user                 = $consul_template::params::user,
   $group                = $consul_template::params::group,
   $manage_user          = $consul_template::params::manage_user,
